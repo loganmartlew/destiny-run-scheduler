@@ -1,4 +1,6 @@
 import { ThemeProvider } from 'styled-components';
+import { AuthProvider } from '../contexts/AuthContext';
+import '../styles/imports.css';
 import GlobalStyles from '../styles/globals';
 import theme from '../styles/theme';
 
@@ -7,7 +9,9 @@ const App = ({ Component, pageProps }) => {
     <>
       <GlobalStyles />
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
       </ThemeProvider>
     </>
   );
