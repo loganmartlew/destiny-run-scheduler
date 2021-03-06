@@ -1,21 +1,14 @@
 const { q, client } = require('../../../utils/fauna');
 
 module.exports = async (req, res) => {
-  const { username, email } = req.body;
+  const { email } = req.query;
 
-  if (req.method !== 'POST') {
+  if (req.method !== 'GET') {
     res.status(400).send();
   }
 
   try {
-    const user = await client.query(
-      q.Create(q.Collection('users'), {
-        data: {
-          name: username,
-          email,
-        },
-      })
-    );
+    const user = await client.query(q.Get(q.Match(q.Index('user_by_email'), email)));
     res.status(200).json({
       ref: user.ref,
       ts: user.ts,

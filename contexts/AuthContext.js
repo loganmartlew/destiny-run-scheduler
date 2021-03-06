@@ -10,7 +10,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState();
-  const [username, setUsername] = useState('');
+  const [dbUser, setDbUser] = useState('');
   const [loading, setLoading] = useState(true);
 
   const signup = (email, password, username) => {
@@ -20,9 +20,10 @@ export const AuthProvider = ({ children }) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ username, email }),
-    });
+    })
+      .then(res => res.json())
+      .then(user => setDbUser(user));
 
-    setUsername(username);
     return firebase.auth().createUserWithEmailAndPassword(email, password);
   };
 
@@ -30,14 +31,14 @@ export const AuthProvider = ({ children }) => {
     fetch(`/api/users/${email}`)
       .then(res => res.json())
       .then(user => {
-        setUsername(user.username);
+        setDbUser(user);
       });
 
     return firebase.auth().signInWithEmailAndPassword(email, password);
   };
 
   const logout = () => {
-    setUsername(undefined);
+    setDbUser(undefined);
     return firebase.auth().signOut();
   };
 
@@ -56,7 +57,7 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     currentUser,
-    username,
+    dbUser,
     signup,
     login,
     logout,
