@@ -1,15 +1,14 @@
-import { ThemeProvider } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from 'styled-components';
+import GlobalStyles from '../styles/globals';
 import theme from '../styles/theme';
-import 'fontsource-roboto';
 
 const App = ({ Component, pageProps }) => {
   return (
     <>
-      {/* <ThemeProvider theme={theme}> */}
-      <CssBaseline />
-      <Component {...pageProps} />
-      {/* </ThemeProvider> */}
+      <GlobalStyles />
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
     </>
   );
 };
