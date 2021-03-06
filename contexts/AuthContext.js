@@ -10,17 +10,34 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState();
+  const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(true);
 
-  const signup = (email, password) => {
+  const signup = (email, password, username) => {
+    fetch('/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, email }),
+    });
+
+    setUsername(username);
     return firebase.auth().createUserWithEmailAndPassword(email, password);
   };
 
   const login = (email, password) => {
+    fetch(`/api/users/${email}`)
+      .then(res => res.json())
+      .then(user => {
+        setUsername(user.username);
+      });
+
     return firebase.auth().signInWithEmailAndPassword(email, password);
   };
 
   const logout = () => {
+    setUsername(undefined);
     return firebase.auth().signOut();
   };
 
@@ -39,6 +56,7 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     currentUser,
+    username,
     signup,
     login,
     logout,

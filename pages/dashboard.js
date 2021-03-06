@@ -7,7 +7,7 @@ const LoggedinDashboard = () => {
   const [error, setError] = useState('');
 
   const router = useRouter();
-  const { logout } = useAuth();
+  const { logout, currentUser, username } = useAuth();
 
   const handleLogout = async e => {
     setError('');
@@ -23,6 +23,8 @@ const LoggedinDashboard = () => {
   return (
     <>
       <h1>Schedules</h1>
+      {username && username}
+      {currentUser && currentUser.email}
       <div>
         <button onClick={handleLogout}>Log out</button>
         {error && <p>{error}</p>}

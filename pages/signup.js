@@ -7,6 +7,7 @@ const Signup = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const usernameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
@@ -24,7 +25,8 @@ const Signup = () => {
     try {
       setError('');
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value);
+      await signup(emailRef.current.value, passwordRef.current.value, usernameRef.current.value);
+      router.push('/dashboard');
     } catch {
       setError('Failed to create account');
     }
@@ -36,6 +38,10 @@ const Signup = () => {
     <>
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
+        <label htmlFor='username'>
+          Username:
+          <input type='text' name='username' id='username' ref={usernameRef} />
+        </label>
         <label htmlFor='email'>
           Email:
           <input type='email' name='email' id='email' ref={emailRef} />
