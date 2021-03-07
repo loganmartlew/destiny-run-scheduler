@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = (email: string, password: string) => {
-    fetch(`/api/users/${email}`)
+    fetch(`/api/users?email=${email}`)
       .then(res => res.json())
       .then(user => {
         setDbUser(user);

@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { NextRouter, useRouter } from 'next/router';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth, AuthContext } from '../contexts/AuthContext';
 
 const Signup = () => {
   const [error, setError] = useState<string>('');
@@ -13,7 +13,7 @@ const Signup = () => {
   const passwordConfirmRef = useRef<HTMLInputElement>(null);
 
   const router: NextRouter = useRouter();
-  const { signup } = useAuth();
+  const { signup }: AuthContext = useAuth();
 
   const handleSubmit: React.FormEventHandler = async (e: React.FormEvent) => {
     e.preventDefault();

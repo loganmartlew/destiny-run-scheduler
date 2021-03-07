@@ -1,5 +1,5 @@
 export default interface User {
-    ref,
+    ref: any,
     ts: number,
     name: string,
     email: string,
