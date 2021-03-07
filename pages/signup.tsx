@@ -1,21 +1,21 @@
 import { useState, useRef } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import { useAuth } from '../contexts/AuthContext';
 
 const Signup = () => {
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const usernameRef = useRef();
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const passwordConfirmRef = useRef<HTMLInputElement>(null);
 
-  const router = useRouter();
+  const router: NextRouter = useRouter();
   const { signup } = useAuth();
 
-  const handleSubmit = async e => {
+  const handleSubmit: React.FormEventHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {

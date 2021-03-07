@@ -1,6 +1,8 @@
-const { q, client } = require('../../../utils/fauna');
+import { q, client } from '../../../utils/fauna';
+import DbUser from '../../../types/DbUser';
+import User from '../../../types/User';
 
-module.exports = async (req, res) => {
+export default async (req, res) => {
   const { username, email } = req.body;
 
   if (req.method !== 'POST') {
@@ -8,7 +10,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const user = await client.query(
+    const user: DbUser = await client.query(
       q.Create(q.Collection('users'), {
         data: {
           name: username,
@@ -16,7 +18,7 @@ module.exports = async (req, res) => {
         },
       })
     );
-    res.status(200).json({
+    res.status(200).json(<User>{
       ref: user.ref,
       ts: user.ts,
       name: user.data.name,

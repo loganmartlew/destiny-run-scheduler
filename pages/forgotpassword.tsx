@@ -3,15 +3,15 @@ import Link from 'next/link';
 import { useAuth } from '../contexts/AuthContext';
 
 const forgotpassword = () => {
-  const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const emailRef = useRef();
+  const emailRef = useRef<HTMLInputElement>(null);
 
   const { resetPassword } = useAuth();
 
-  const handleSubmit = async e => {
+  const handleSubmit: React.FormEventHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {

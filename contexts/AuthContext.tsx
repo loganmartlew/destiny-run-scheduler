@@ -1,19 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react';
+import fb from 'firebase'
 import firebase from '../utils/firebase';
 import 'firebase/auth';
 
-const AuthContext = React.createContext();
+import User from '../types/User';
+
+const AuthContext = React.createContext(undefined);
 
 export const useAuth = () => {
   return useContext(AuthContext);
 };
 
 export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState();
-  const [dbUser, setDbUser] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [authUser, setAuthUser] = useState<fb.User>();
+  const [dbUser, setDbUser] = useState<User | undefined>(undefined);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const signup = (email, password, username) => {
+  const signup = (email: string, password: string, username: string) => {
     fetch('/api/users', {
       method: 'POST',
       headers: {
@@ -27,7 +30,7 @@ export const AuthProvider = ({ children }) => {
     return firebase.auth().createUserWithEmailAndPassword(email, password);
   };
 
-  const login = (email, password) => {
+  const login = (email: string, password: string) => {
     fetch(`/api/users/${email}`)
       .then(res => res.json())
       .then(user => {
@@ -48,15 +51,15 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
-      setCurrentUser(user);
+      setAuthUser(user);
       setLoading(false);
     });
 
     return unsubscribe;
   }, []);
 
-  const value = {
-    currentUser,
+  const value: AuthContext = {
+    authUser,
     dbUser,
     signup,
     login,
@@ -66,3 +69,12 @@ export const AuthProvider = ({ children }) => {
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 };
+
+export interface AuthContext {
+  authUser: fb.User,
+  dbUser: User,
+  signup,
+  login,
+  logout,
+  resetPassword,
+}

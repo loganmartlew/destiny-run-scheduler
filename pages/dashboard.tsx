@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useAuth, AuthProvider } from '../contexts/AuthContext';
+import { useAuth, AuthContext } from '../contexts/AuthContext';
 
 const LoggedinDashboard = () => {
   const [error, setError] = useState('');
 
   const router = useRouter();
-  const { logout, currentUser, dbUser } = useAuth();
+  const { logout, dbUser }: AuthContext = useAuth();
 
-  const handleLogout = async e => {
+  const handleLogout: React.FormEventHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     setError('');
 
     try {
@@ -46,9 +48,9 @@ const DefaultDashboard = () => {
 };
 
 const DashboardHOC = () => {
-  const { currentUser } = useAuth();
+  const { authUser }: AuthContext = useAuth();
 
-  return currentUser ? <LoggedinDashboard /> : <DefaultDashboard />;
+  return authUser ? <LoggedinDashboard /> : <DefaultDashboard />;
 };
 
 export default DashboardHOC;
