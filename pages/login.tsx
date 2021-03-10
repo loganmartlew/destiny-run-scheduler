@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import Link from 'next/link';
-import { NextRouter, useRouter } from 'next/router';
-import { useAuth, AuthContext } from '../contexts/AuthContext';
+import { useRouter } from 'next/router';
+import { useAuth, AuthContext } from '@/contexts/AuthContext';
 
 const Login = () => {
   const [error, setError] = useState<string>('');
@@ -10,16 +10,16 @@ const Login = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  const router: NextRouter = useRouter();
-  const { login }: AuthContext = useAuth();
+  const router = useRouter();
+  const { login } = useAuth() as AuthContext;
 
-  const handleSubmit: React.FormEventHandler = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       setError('');
       setLoading(true);
-      await login(emailRef.current.value, passwordRef.current.value);
+      await login(emailRef.current!.value, passwordRef.current!.value);
       router.push('/dashboard');
     } catch {
       setError('Failed to log in');
@@ -38,7 +38,12 @@ const Login = () => {
         </label>
         <label htmlFor='password'>
           Password:
-          <input type='password' name='password' id='password' ref={passwordRef} />
+          <input
+            type='password'
+            name='password'
+            id='password'
+            ref={passwordRef}
+          />
         </label>
         <button type='submit' disabled={loading}>
           Sign In

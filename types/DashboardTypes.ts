@@ -1,27 +1,28 @@
-import User from '../types/User';
+import User from '@/types/User';
 
 export interface RunRange {
-  ref;
-  ts;
+  ref: any;
+  ts: any;
   user: User;
   start: number;
   end: number;
 }
 
 export interface Day {
-  ref;
-  ts;
+  ref: any;
+  ts: any;
   date: string;
   ranges: [RunRange];
 }
 
 export interface Schedule {
-  ref;
-  ts;
+  ref: any;
+  ts: any;
   name: string;
   users: [User];
   days: [Day];
 }
-export interface Schedules {
-  [schedules: number]: Schedule;
+
+export interface DashboardProps {
+  schedules: Schedule[];
 }

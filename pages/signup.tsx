@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import Link from 'next/link';
-import { NextRouter, useRouter } from 'next/router';
-import { useAuth, AuthContext } from '../contexts/AuthContext';
+import { useRouter } from 'next/router';
+import { useAuth, AuthContext } from '@/contexts/AuthContext';
 
 const Signup = () => {
   const [error, setError] = useState<string>('');
@@ -12,20 +12,24 @@ const Signup = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordConfirmRef = useRef<HTMLInputElement>(null);
 
-  const router: NextRouter = useRouter();
-  const { signup }: AuthContext = useAuth();
+  const router = useRouter();
+  const { signup } = useAuth() as AuthContext;
 
-  const handleSubmit: React.FormEventHandler = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+    if (passwordRef.current!.value !== passwordConfirmRef.current!.value) {
       return setError('Passwords do not match');
     }
 
     try {
       setError('');
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value, usernameRef.current.value);
+      await signup(
+        emailRef.current!.value,
+        passwordRef.current!.value,
+        usernameRef.current!.value
+      );
       router.push('/dashboard');
     } catch {
       setError('Failed to create account');
@@ -48,7 +52,12 @@ const Signup = () => {
         </label>
         <label htmlFor='password'>
           Password:
-          <input type='password' name='password' id='password' ref={passwordRef} />
+          <input
+            type='password'
+            name='password'
+            id='password'
+            ref={passwordRef}
+          />
         </label>
         <label htmlFor='passwordConfirm'>
           Confirm Password:

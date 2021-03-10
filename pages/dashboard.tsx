@@ -1,17 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter, NextRouter } from 'next/router';
-import { useAuth, AuthContext } from '../contexts/AuthContext';
+import { useRouter } from 'next/router';
+import { useAuth, AuthContext } from '@/contexts/AuthContext';
 import { GetServerSideProps } from 'next';
-import { Schedules, Schedule } from '../types/DashboardTypes';
+import { Schedule, DashboardProps } from '@/types/DashboardTypes';
 
-const LoggedinDashboard = ({ schedules }) => {
-  const [error, setError] = useState('');
+const LoggedinDashboard: React.FC<DashboardProps> = ({ schedules }) => {
+  const [error, setError] = useState<string>('');
 
-  const router: NextRouter = useRouter();
-  const { logout, dbUser }: AuthContext = useAuth();
+  const router = useRouter();
+  const { logout, dbUser } = useAuth() as AuthContext;
 
-  const handleLogout: React.FormEventHandler = async (e: React.FormEvent) => {
+  const handleLogout = async (e: React.FormEvent) => {
     e.preventDefault();
 
     setError('');
@@ -21,7 +21,7 @@ const LoggedinDashboard = ({ schedules }) => {
       router.push('/');
     } catch {
       setError('Failed to log out');
-    };
+    }
   };
 
   return (
@@ -29,7 +29,9 @@ const LoggedinDashboard = ({ schedules }) => {
       <h1>Welcome, {dbUser?.name}!</h1>
       <h2>Schedules</h2>
       <div>
-        {schedules.map((schedule: Schedule) => <p>{schedule.name}</p>)}
+        {schedules.map(schedule => (
+          <p key={schedule.ref}>{schedule.name}</p>
+        ))}
       </div>
       <div>
         <button onClick={handleLogout}>Log out</button>
@@ -44,23 +46,38 @@ const DefaultDashboard = () => {
     <>
       <p>You are not signed in in</p>
       <div>
-        <Link href='/signin'>
-          <a href='/signin'>Sign In</a>
+        <Link href='/login'>
+          <a href='/login'>Sign In</a>
         </Link>
       </div>
     </>
   );
 };
 
-const DashboardHOC = ({ schedules }) => {
-  const { authUser }: AuthContext = useAuth();
+const DashboardHOC: React.FC<DashboardProps> = ({ schedules }) => {
+  const { authUser, dbUser, login }: AuthContext = useAuth() as AuthContext;
 
-  return authUser ? <LoggedinDashboard schedules={schedules} /> : <DefaultDashboard />;
+  let [loggedIn, setLoggedIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (authUser && dbUser) setLoggedIn(true);
+
+    if (authUser) {
+      login(authUser.email!, '');
+      setLoggedIn(true);
+    }
+  }, []);
+
+  return loggedIn ? (
+    <LoggedinDashboard schedules={schedules} />
+  ) : (
+    <DefaultDashboard />
+  );
 };
 
 export default DashboardHOC;
 
-export const getServerSideProps: GetServerSideProps<Schedules> = async () => {
+export const getServerSideProps: GetServerSideProps<DashboardProps> = async () => {
   const schedule1: Schedule = {
     ref: 1,
     ts: 1,
@@ -71,7 +88,7 @@ export const getServerSideProps: GetServerSideProps<Schedules> = async () => {
         ts: 1,
         name: 'Jag',
         email: 'logan.martlew@gmail.com',
-      }
+      },
     ],
     days: [
       {
@@ -90,14 +107,14 @@ export const getServerSideProps: GetServerSideProps<Schedules> = async () => {
             },
             start: 6,
             end: 10,
-          }
-        ]
-      }
-    ]
-  }
+          },
+        ],
+      },
+    ],
+  };
 
   const schedule2: Schedule = {
-    ref: 1,
+    ref: 2,
     ts: 1,
     name: 'Other Runs',
     users: [
@@ -106,7 +123,7 @@ export const getServerSideProps: GetServerSideProps<Schedules> = async () => {
         ts: 1,
         name: 'Jag',
         email: 'logan.martlew@gmail.com',
-      }
+      },
     ],
     days: [
       {
@@ -125,17 +142,17 @@ export const getServerSideProps: GetServerSideProps<Schedules> = async () => {
             },
             start: 6,
             end: 10,
-          }
-        ]
-      }
-    ]
-  }
+          },
+        ],
+      },
+    ],
+  };
 
-  const schedules: Schedules = [schedule1, schedule2];
+  const schedules: Schedule[] = [schedule1, schedule2];
 
   return {
     props: {
       schedules,
-    }
-  }
-}
+    },
+  };
+};
