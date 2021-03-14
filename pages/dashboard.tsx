@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useAuth, AuthContext } from '@/contexts/AuthContext';
+import Storage from '@/utils/localStorage';
 import { GetServerSideProps } from 'next';
 import { Schedule, DashboardProps } from '@/types/DashboardTypes';
 
@@ -84,7 +85,7 @@ export const getServerSideProps: GetServerSideProps<DashboardProps> = async () =
     name: 'Wish Runs',
     users: [
       {
-        ref: 1,
+        ref: '1',
         ts: 1,
         name: 'Jag',
         email: 'logan.martlew@gmail.com',
@@ -92,15 +93,15 @@ export const getServerSideProps: GetServerSideProps<DashboardProps> = async () =
     ],
     days: [
       {
-        ref: 1,
+        ref: '1',
         ts: 1,
         date: '3/7/2021',
         ranges: [
           {
-            ref: 1,
+            ref: '1',
             ts: 1,
             user: {
-              ref: 1,
+              ref: '1',
               ts: 1,
               name: 'Jag',
               email: 'logan.martlew@gmail.com',
@@ -114,12 +115,12 @@ export const getServerSideProps: GetServerSideProps<DashboardProps> = async () =
   };
 
   const schedule2: Schedule = {
-    ref: 2,
+    ref: '2',
     ts: 1,
     name: 'Other Runs',
     users: [
       {
-        ref: 1,
+        ref: '1',
         ts: 1,
         name: 'Jag',
         email: 'logan.martlew@gmail.com',
@@ -127,15 +128,15 @@ export const getServerSideProps: GetServerSideProps<DashboardProps> = async () =
     ],
     days: [
       {
-        ref: 1,
+        ref: '1',
         ts: 1,
         date: '3/7/2021',
         ranges: [
           {
-            ref: 1,
+            ref: '1',
             ts: 1,
             user: {
-              ref: 1,
+              ref: '1',
               ts: 1,
               name: 'Jag',
               email: 'logan.martlew@gmail.com',
@@ -148,7 +149,12 @@ export const getServerSideProps: GetServerSideProps<DashboardProps> = async () =
     ],
   };
 
-  const schedules: Schedule[] = [schedule1, schedule2];
+  // const schedules: Schedule[] = [schedule1, schedule2];
+
+  const lsUser = Storage.getAnyValue('currentUser');
+
+  const res = await fetch(`/api/schedules?userref=${lsUser.ref}`);
+  const schedules = await res.json();
 
   return {
     props: {

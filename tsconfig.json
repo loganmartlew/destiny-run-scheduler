@@ -26,7 +26,8 @@
       "@/utils/*": ["./utils/*"],
       "@/contexts/*": ["./contexts/*"],
       "@/components/*": ["./components/*"]
-    }
+    },
+    "sourceMap": true
   },
   "include": [
     "next-env.d.ts",

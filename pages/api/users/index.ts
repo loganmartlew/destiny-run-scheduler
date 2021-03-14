@@ -54,18 +54,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           },
         })
       );
-      res.status(200).json(<User>{
+      return res.status(200).json(<User>{
         ref: user.ref,
         ts: user.ts,
         name: user.data.name,
         email: user.data.email,
       });
     } catch (err) {
-      res
+      return res
         .status(500)
         .json({ message: err.message || 'An unknown error occurred' });
     }
   }
 
-  res.status(400).json({ message: 'Invalid request method' });
+  return res.status(400).json({ message: 'Invalid request method' });
 };
