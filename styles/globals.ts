@@ -7,4 +7,9 @@ export default createGlobalStyle`
         box-sizing: border-box;
         font-family: 'Rubik', sans-serif;
     }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
 `;

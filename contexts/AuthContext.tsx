@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import fb from 'firebase';
 import firebase from '@/utils/firebase';
 import 'firebase/auth';
-import Storage from '@/utils/localStorage';
 import User from '@/types/User';
 
 export interface AuthContext {
@@ -37,8 +36,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [dbUser, setDbUser] = useState<User | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const userStorage = new Storage('currentUser');
-
   const signup = (email: string, password: string, username: string) => {
     fetch('/api/users', {
       method: 'POST',
@@ -50,7 +47,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       .then(res => res.json())
       .then(user => {
         setDbUser(user);
-        userStorage.setValue(user);
       });
 
     return firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -61,7 +57,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       .then(res => res.json())
       .then(user => {
         setDbUser(user);
-        userStorage.setValue(user);
       });
 
     if (password !== '')
@@ -70,7 +65,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const logout = () => {
     setDbUser(undefined);
-    userStorage.clearValue();
     return firebase.auth().signOut();
   };
 

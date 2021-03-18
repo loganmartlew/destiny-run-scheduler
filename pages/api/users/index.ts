@@ -13,7 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           q.Get(q.Match(q.Index('user_by_email'), email))
         );
         return res.status(200).json(<User>{
-          ref: user.ref,
+          ref: user.ref.value.id,
           ts: user.ts,
           name: user.data.name,
           email: user.data.email,
@@ -29,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           q.Get(q.Match(q.Index('user_by_name'), name))
         );
         return res.status(200).json(<User>{
-          ref: user.ref,
+          ref: user.ref.value.id,
           ts: user.ts,
           name: user.data.name,
           email: user.data.email,
@@ -55,7 +55,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         })
       );
       return res.status(200).json(<User>{
-        ref: user.ref,
+        ref: user.ref.value.id,
         ts: user.ts,
         name: user.data.name,
         email: user.data.email,
