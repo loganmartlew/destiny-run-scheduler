@@ -16,5 +16,22 @@ const { open } = require('sqlite');
 
   // await db.exec('INSERT INTO schedule (name) VALUES ("Other Runs")');
 
-  await db.exec('INSERT INTO user_schedule (userid, scheduleid) VALUES (2, 2)');
+  // await db.exec('INSERT INTO user_schedule (userid, scheduleid) VALUES (2, 2)');
+
+  // await db.exec('INSERT INTO day (date, scheduleid) VALUES ("20/03/2021", 1)');
+  // await db.exec(
+  //   'INSERT INTO runrange (start, end, dayid, userid) VALUES (6, 11, 1, 1)'
+  // );
+  // await db.exec(
+  //   'INSERT INTO runrange (start, end, dayid, userid) VALUES (6, 10, 1, 2)'
+  // );
+
+  await db.exec('INSERT INTO day (date, scheduleid) VALUES ("20/03/2021", 2)');
+  await db.exec(
+    'INSERT INTO runrange (start, end, dayid, userid) VALUES (6, 12, 2, 2)'
+  );
+  await db.exec('INSERT INTO day (date, scheduleid) VALUES ("21/03/2021", 2)');
+  await db.exec(
+    'INSERT INTO runrange (start, end, dayid, userid) VALUES (8, 11, 3, 2)'
+  );
 })();
