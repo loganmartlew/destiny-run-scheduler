@@ -4,8 +4,16 @@ import { useDb } from '@/utils/db';
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const db = await useDb();
 
+  if (req.method !== 'GET') {
+    return res.status(400).json({
+      message: 'Bad request. Only GET requests are allowed at this endpoint.',
+    });
+  }
+
+  const { id: scheduleid } = req.query;
+
   let schedule: any = await db.get(
-    `SELECT * FROM schedule WHERE id = ${req.query.id}`
+    `SELECT * FROM schedule WHERE id = ${scheduleid}`
   );
 
   const usersInSchedule = await db.all(

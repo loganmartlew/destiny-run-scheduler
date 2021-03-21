@@ -6,7 +6,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.method !== 'POST') {
     return res.status(400).json({
-      message: 'Bad request. Only POST methods are allowed at this endpoint',
+      message: 'Bad request. Only POST requests are allowed at this endpoint.',
     });
   }
 
@@ -33,6 +33,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     `SELECT * FROM schedule WHERE id = ${newScheduleId}`
   );
 
-  console.log(newSchedule);
-  res.json(newSchedule);
+  return res.json(newSchedule);
 };
