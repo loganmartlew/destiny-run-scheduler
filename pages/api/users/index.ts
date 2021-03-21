@@ -1,71 +1,32 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { q, client } from '@/utils/fauna';
-import DbUser from '@/types/DbUser';
-import User from '@/types/User';
+import { useDb } from '@/utils/db';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { email, name } = req.query;
+  const db = await useDb();
 
-  if (req.method === 'GET') {
-    if (email) {
-      try {
-        const user: DbUser = await client.query(
-          q.Get(q.Match(q.Index('user_by_email'), email))
-        );
-        return res.status(200).json(<User>{
-          ref: user.ref.value.id,
-          ts: user.ts,
-          name: user.data.name,
-          email: user.data.email,
-        });
-      } catch (err) {
-        return res
-          .status(500)
-          .json({ message: err.message || 'An unknown error occurred' });
-      }
-    } else {
-      try {
-        const user: DbUser = await client.query(
-          q.Get(q.Match(q.Index('user_by_name'), name))
-        );
-        return res.status(200).json(<User>{
-          ref: user.ref.value.id,
-          ts: user.ts,
-          name: user.data.name,
-          email: user.data.email,
-        });
-      } catch (err) {
-        return res
-          .status(500)
-          .json({ message: err.message || 'An unknown error occurred' });
-      }
-    }
+  if (req.method !== 'POST') {
+    return res.status(400).json({
+      message: 'Bad request. Only POST requests are allowed at this endpoint.',
+    });
   }
 
-  if (req.method === 'POST') {
-    const { username, email } = req.body;
+  const { name, email } = req.body;
 
-    try {
-      const user: DbUser = await client.query(
-        q.Create(q.Collection('users'), {
-          data: {
-            name: username,
-            email,
-          },
-        })
-      );
-      return res.status(200).json(<User>{
-        ref: user.ref.value.id,
-        ts: user.ts,
-        name: user.data.name,
-        email: user.data.email,
-      });
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ message: err.message || 'An unknown error occurred' });
-    }
+  if (!name || !email) {
+    return res.status(400).json({
+      message: 'Bad request. Name or email not provided, unable to create user',
+    });
   }
 
-  return res.status(400).json({ message: 'Invalid request method' });
+  await db.exec(
+    `INSERT INTO user (name, email) VALUES ("${name}", "${email}")`
+  );
+
+  const { 'last_insert_rowid()': newUserId } = await db.get(
+    `SELECT last_insert_rowid()`
+  );
+
+  const newUser = await db.get(`SELECT * FROM user WHERE id = ${newUserId}`);
+
+  return res.json(newUser);
 };
