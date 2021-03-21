@@ -4,16 +4,14 @@ import { useDb } from '@/utils/db';
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const db = await useDb();
 
-  // const usersInSchedule =
-  //   'SELECT u.name FROM user u, schedule s, user_schedule us WHERE u.id = us.userid AND s.id = us.scheduleid AND s.id = 2';
+  const { userid } = req.query;
 
-  // const schedulesByUser =
-  //   'SELECT s.* FROM schedule s, user_schedule us WHERE s.id = us.scheduleid AND us.userid = 2';
+  if (!userid) return res.status(400).json({ message: 'No user id provided' });
 
-  // const query = await db.all(schedulesByUser);
+  let schedules: any[];
 
-  let schedules: any[] = await db.all(
-    'SELECT s.* FROM schedule s, user_schedule us WHERE s.id = us.scheduleid AND us.userid = 2'
+  schedules = await db.all(
+    `SELECT s.* FROM schedule s, user_schedule us WHERE s.id = us.scheduleid AND us.userid = ${userid}`
   );
 
   schedules = schedules.map(async schedule => {
