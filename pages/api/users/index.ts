@@ -4,6 +4,11 @@ import { useDb } from '@/utils/db';
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const db = await useDb();
 
+  if (req.method === 'GET') {
+    const users = await db.all('SELECT * FROM user');
+    return res.json(users);
+  }
+
   if (req.method !== 'POST') {
     return res.status(400).json({
       message: 'Bad request. Only POST requests are allowed at this endpoint.',

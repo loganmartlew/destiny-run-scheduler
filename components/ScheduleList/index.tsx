@@ -15,51 +15,51 @@ import {
 import { Schedule } from '@/types/ScheduleTypes';
 
 interface ScheduleProps {
-  schedules: Schedule[];
+  schedules: any;
 }
 
 const ScheduleList: React.FC<ScheduleProps> = ({ schedules }) => {
   const newSchedules = schedules;
 
-  useEffect(() => {
-    newSchedules.forEach(schedule => {
-      schedule.users.push({
-        ref: '235445',
-        ts: 27439034,
-        name: 'Gunnar',
-        email: '1@1.com',
-      });
-      schedule.users.push({
-        ref: '235446',
-        ts: 24399034,
-        name: 'Cocobeans',
-        email: '1@1.com',
-      });
-      schedule.users.push({
-        ref: '235456',
-        ts: 27439903,
-        name: 'Rhyoa',
-        email: '1@1.com',
-      });
-      schedule.users.push({
-        ref: '23456',
-        ts: 27439904,
-        name: 'Theo',
-        email: '1@1.com',
-      });
-      schedule.users.push({
-        ref: '234456',
-        ts: 74399034,
-        name: 'Crimson',
-        email: '1@1.com',
-      });
-    });
-  }, []);
+  // useEffect(() => {
+  //   newSchedules.forEach(schedule => {
+  //     schedule.users.push({
+  //       ref: '235445',
+  //       ts: 27439034,
+  //       name: 'Gunnar',
+  //       email: '1@1.com',
+  //     });
+  //     schedule.users.push({
+  //       ref: '235446',
+  //       ts: 24399034,
+  //       name: 'Cocobeans',
+  //       email: '1@1.com',
+  //     });
+  //     schedule.users.push({
+  //       ref: '235456',
+  //       ts: 27439903,
+  //       name: 'Rhyoa',
+  //       email: '1@1.com',
+  //     });
+  //     schedule.users.push({
+  //       ref: '23456',
+  //       ts: 27439904,
+  //       name: 'Theo',
+  //       email: '1@1.com',
+  //     });
+  //     schedule.users.push({
+  //       ref: '234456',
+  //       ts: 74399034,
+  //       name: 'Crimson',
+  //       email: '1@1.com',
+  //     });
+  //   });
+  // }, []);
 
   return (
     <List>
-      {newSchedules.map(schedule => (
-        <SchedulePreview key={schedule.ref}>
+      {newSchedules.map((schedule: any) => (
+        <SchedulePreview key={schedule.id}>
           <ScheduleHeader>
             <ReorderContainer>
               <BiMenu />
@@ -68,8 +68,8 @@ const ScheduleList: React.FC<ScheduleProps> = ({ schedules }) => {
           </ScheduleHeader>
           <NextRunBadge>Runs at +6, 20/03</NextRunBadge>
           <Users>
-            {schedule.users.map(user => (
-              <p key={user.ref}>{user.name}</p>
+            {schedule.users.map((user: any) => (
+              <p key={user.id}>{user.name}</p>
             ))}
           </Users>
           <ButtonsContainer>

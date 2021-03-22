@@ -7,5 +7,7 @@ export const useDb = async () => {
     driver: sqlite3.Database,
   });
 
+  await db.migrate();
+
   return db;
 };

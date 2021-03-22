@@ -84,14 +84,9 @@ const Home: React.FC = () => {
             </Link>
           </Nav>
           <AccountButtons>
-            <Link href='/login'>
-              <Button as='a' btnStyle='outline'>
-                Log In
-              </Button>
-            </Link>
-            <Link href='/signup'>
-              <Button as='a'>Sign Up</Button>
-            </Link>
+            <Button as='a' href='/api/auth/login'>
+              Log In
+            </Button>
           </AccountButtons>
           <MenuBtnContainer>
             <HamburgerButton
@@ -123,14 +118,9 @@ const Home: React.FC = () => {
             </Link>
           </MenuNav>
           <MenuAccountButtons>
-            <Link href='/login'>
-              <Button as='a' btnStyle='outline'>
-                Log In
-              </Button>
-            </Link>
-            <Link href='/signup'>
-              <Button as='a'>Sign Up</Button>
-            </Link>
+            <Button as='a' href='/api/auth/login'>
+              Log In
+            </Button>
           </MenuAccountButtons>
         </Menu>
         <HeroContent>

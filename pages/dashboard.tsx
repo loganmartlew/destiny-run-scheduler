@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useAuth, AuthContext } from '@/contexts/AuthContext';
-import { GetServerSideProps } from 'next';
+import { useUser } from '@auth0/nextjs-auth0';
 import { IoMdAdd } from 'react-icons/io';
 import ScheduleList from '@/components/ScheduleList';
 import { Button } from '@/components/Button';
@@ -23,35 +22,16 @@ interface DashboardProps {
 
 const LoggedinDashboard: React.FC = () => {
   const [schedules, setSchedules] = useState<Schedule[]>();
-  const [loading, setLoading] = useState<Boolean>(true);
-  const [error, setError] = useState<String>('');
 
-  const router = useRouter();
-  const { logout, dbUser } = useAuth() as AuthContext;
+  const { user, error, isLoading } = useUser();
 
   useEffect(() => {
-    if (dbUser) {
-      fetch(`/api/schedules?userref=${dbUser?.ref}`)
+    if (user) {
+      fetch('/api/schedules/previews?userid=1')
         .then(res => res.json())
-        .then(data => {
-          setSchedules(data);
-          setLoading(false);
-        });
+        .then(schedules => setSchedules(schedules));
     }
-  }, [dbUser]);
-
-  const handleLogout = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    setError('');
-
-    try {
-      await logout();
-      router.push('/');
-    } catch {
-      setError('Failed to log out');
-    }
-  };
+  }, [user]);
 
   return (
     <DashboardWrapper>
@@ -60,7 +40,7 @@ const LoggedinDashboard: React.FC = () => {
           <Link href='/'>Runs?</Link>
         </Logo>
         <AccountButtons>
-          <Button btnStyle='outline' onClick={handleLogout}>
+          <Button as='a' href='/api/auth/logout' btnStyle='outline'>
             Log Out
           </Button>
           <Link href='/signup'>
@@ -68,7 +48,7 @@ const LoggedinDashboard: React.FC = () => {
           </Link>
         </AccountButtons>
       </TopBar>
-      <Title>Welcome{dbUser && ', ' + dbUser.name}!</Title>
+      <Title>Welcome{user && ', ' + user.name}!</Title>
       <SectionTitle>
         <SchedulesTitle>My Schedules</SchedulesTitle>
         <Button as='a'>
@@ -78,7 +58,7 @@ const LoggedinDashboard: React.FC = () => {
       <div>
         {Array.isArray(schedules) ? (
           <ScheduleList schedules={schedules} />
-        ) : loading ? (
+        ) : isLoading ? (
           <p>Loading Schedules...</p>
         ) : (
           <p>No schedules found</p>
@@ -94,32 +74,25 @@ const DefaultDashboard = () => {
     <>
       <p>You are not signed in in</p>
       <div>
-        <Link href='/login'>
-          <a href='/login'>Sign In</a>
-        </Link>
+        <Button as='a' href='/api/auth/login'>
+          Log In
+        </Button>
       </div>
     </>
   );
 };
 
 const DashboardHOC: React.FC<DashboardProps> = ({ schedules }) => {
-  const { authUser, dbUser, login }: AuthContext = useAuth() as AuthContext;
+  const { user, error, isLoading } = useUser();
 
   let [loggedIn, setLoggedIn] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (authUser && dbUser) setLoggedIn(true);
-
-    if (authUser) {
-      login(authUser.email!, '');
-      setLoggedIn(true);
-    }
-  }, []);
+  if (user) setLoggedIn(true);
 
   return loggedIn ? <LoggedinDashboard /> : <DefaultDashboard />;
 };
 
-export default DashboardHOC;
+export default LoggedinDashboard;
 
 // export const getServerSideProps: GetServerSideProps<DashboardProps> = async () => {
 //   const schedule1: Schedule = {
