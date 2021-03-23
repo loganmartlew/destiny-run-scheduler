@@ -35,6 +35,7 @@ export const Button = styled.button<ButtonProps>`
 
           &:hover {
             background-color: ${props.theme.colors.white};
+            border-color: ${props.theme.colors.white};
             color: ${props.theme.colors.dark}
           }
         `;
