@@ -15,6 +15,7 @@ export const Button = styled.button<ButtonProps>`
   border: 3px solid;
   border-color: ${({ theme }) => theme.colors.primary};
   border-radius: 8px;
+  outline: none;
   color: ${({ theme }) => theme.colors.white};
   font-size: 1.1rem;
   font-weight: 700;

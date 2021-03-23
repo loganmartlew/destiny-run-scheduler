@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useUser } from '@auth0/nextjs-auth0';
+import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { IoMdAdd } from 'react-icons/io';
-import LoggedInHOC from '@/components/LoggedInHOC';
 import ScheduleList from '@/components/ScheduleList';
 import { Button } from '@/components/Button';
 import {
@@ -9,7 +8,7 @@ import {
   Title,
   SectionTitle,
   SchedulesTitle,
-} from '@/components/PageStyles/DashboardStyles';
+} from '@/pagestyles/DashboardStyles';
 import { Schedule } from '@/types/ScheduleTypes';
 
 const Dashboard: React.FC = () => {
@@ -48,6 +47,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-const Auth: React.FC = () => <LoggedInHOC LoggedinComponent={Dashboard} />;
-
-export default Auth;
+export default withPageAuthRequired(Dashboard);

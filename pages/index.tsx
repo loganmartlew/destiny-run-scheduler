@@ -7,7 +7,7 @@ import {
   Title,
   Subtitle,
   ArrowContainer,
-} from '@/components/PageStyles/HomeStyles';
+} from '@/pagestyles/HomeStyles';
 
 const Home: React.FC = () => {
   return (

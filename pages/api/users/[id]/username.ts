@@ -28,10 +28,25 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
+  // Update username in db
+
+  const response = await fetch(`${process.env.AUTH0_API_TOKEN_URL}`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      client_id: process.env.AUTH0_API_CLIENT_ID,
+      client_secret: process.env.AUTH0_API_CLIENT_SECRET,
+      audience: `${process.env.AUTH0_API_URL}/`,
+      grant_type: 'client_credentials',
+    }),
+  });
+
+  const { access_token } = await response.json();
+
   await fetch(`${url}/users/${userid}`, {
     method: 'PATCH',
     headers: {
-      authorization: `Bearer ${process.env.AUTH0_API_TOKEN}`,
+      authorization: `Bearer ${access_token}`,
       'content-type': 'application/json',
     },
     body: JSON.stringify({

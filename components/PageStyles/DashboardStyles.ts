@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 export const DashboardWrapper = styled.div`
-  min-height: 100vh;
-  color: ${({ theme }) => theme.colors.white};
+  padding-top: 5em;
 `;
 
 export const Title = styled.h1`

@@ -25,7 +25,8 @@
       "@/types/*": ["./types/*"],
       "@/utils/*": ["./utils/*"],
       "@/contexts/*": ["./contexts/*"],
-      "@/components/*": ["./components/*"]
+      "@/components/*": ["./components/*"],
+      "@/pagestyles/*": ["./components/PageStyles/*"]
     },
     "sourceMap": true
   },
