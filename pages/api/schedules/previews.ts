@@ -1,6 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { useDb } from '@/utils/db';
 
+/*
+methods: GET
+url query params: {
+  userid: auth0 id of user
+}
+*/
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const db = await useDb();
 
@@ -23,10 +30,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   schedules = schedules.map(async schedule => {
     const usersInSchedule = await db.all(
       `SELECT u.* FROM user u, user_schedule us WHERE u.id = us.userid AND us.scheduleid = ${schedule.id}`
-    );
-
-    const daysInSchedule = await db.all(
-      `SELECT id, date FROM day WHERE scheduleid = ${schedule.id}`
     );
 
     return {

@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
-import { AuthProvider } from '@/contexts/AuthContext';
+import { UserProvider } from '@auth0/nextjs-auth0';
 import '@/styles/imports.css';
 import GlobalStyles from '@/styles/globals';
 import theme from '@/styles/theme';
@@ -10,9 +10,9 @@ const App: React.FC<AppProps> = ({ Component, pageProps }: AppProps) => {
     <>
       <GlobalStyles />
       <ThemeProvider theme={theme}>
-        <AuthProvider>
+        <UserProvider>
           <Component {...pageProps} />
-        </AuthProvider>
+        </UserProvider>
       </ThemeProvider>
     </>
   );

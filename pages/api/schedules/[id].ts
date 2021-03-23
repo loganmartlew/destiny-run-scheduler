@@ -1,6 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { useDb } from '@/utils/db';
 
+/*
+methods: GET
+route param: {
+  id: id of requested schedule
+}
+*/
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const db = await useDb();
 

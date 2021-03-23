@@ -1,6 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { useDb } from '@/utils/db';
 
+/*
+methods: POST
+body: {
+  name: schedule name
+  user: {
+    id: auth0 id
+    name: auth0 username
+    email: auth0 email
+  }
+}
+*/
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const db = await useDb();
 
@@ -10,13 +22,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
-  const { name, userid } = req.body;
+  const { name, user } = req.body;
 
-  if (!name || !userid) {
+  if (!name || !user) {
     return res.status(400).json({
       message:
-        'Bad request. Name or userid not provided, unable to create user',
+        'Bad request. Schedule name or user not provided, unable to create user',
     });
+  }
+
+  const existingUser = await db.get(`SELECT * FROM user WHERE id = ${user.id}`);
+
+  // Create user if there is no record of the supplied user
+  if (!existingUser) {
+    await db.exec(
+      `INSERT INTO user (id, name, email) VALUES ("${user.id}", "${user.name}", "${user.email}")`
+    );
   }
 
   await db.exec(`INSERT INTO schedule (name) VALUES ("${name}")`);
@@ -26,7 +47,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   );
 
   await db.exec(
-    `INSERT INTO user_schedule (userid, scheduleid) VALUES (${userid}, ${newScheduleId})`
+    `INSERT INTO user_schedule (userid, scheduleid) VALUES (${user.id}, ${newScheduleId})`
   );
 
   const newSchedule = await db.get(
