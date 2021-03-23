@@ -1,6 +1,7 @@
 export interface Theme {
   padding: string;
-  paddingN: string;
+  // paddingN: string;
+  headerHeight: number;
   colors: {
     white: string;
     primary: string;
@@ -18,7 +19,9 @@ export interface Theme {
 
 const theme: Theme = {
   padding: 'clamp(1rem, 10vw, 8rem)',
-  paddingN: 'clamp(-8rem, -10vw, -1rem)',
+  // paddingN: 'clamp(-8rem, -10vw, -1rem)',
+
+  headerHeight: 79,
 
   colors: {
     white: 'white',

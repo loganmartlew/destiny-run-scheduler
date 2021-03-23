@@ -1,9 +1,7 @@
 import styled from 'styled-components';
 
-export const DashboardWrapper = styled.main`
-  padding: 0 ${({ theme }) => theme.padding};
+export const DashboardWrapper = styled.div`
   min-height: 100vh;
-  background-color: ${({ theme }) => theme.colors.dark};
   color: ${({ theme }) => theme.colors.white};
 `;
 

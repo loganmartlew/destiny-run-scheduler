@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 import { IoMdAdd } from 'react-icons/io';
+import LoggedInHOC from '@/components/LoggedInHOC';
 import ScheduleList from '@/components/ScheduleList';
 import { Button } from '@/components/Button';
-import Header from '@/components/Header';
 import {
   DashboardWrapper,
   Title,
@@ -12,18 +12,14 @@ import {
 } from '@/components/PageStyles/DashboardStyles';
 import { Schedule } from '@/types/ScheduleTypes';
 
-interface DashboardProps {
-  schedules: Schedule[];
-}
-
-const LoggedinDashboard: React.FC = () => {
+const Dashboard: React.FC = () => {
   const [schedules, setSchedules] = useState<Schedule[]>();
 
   const { user, error, isLoading } = useUser();
 
   useEffect(() => {
     if (user) {
-      fetch('/api/schedules/previews?userid=1')
+      fetch(`/api/schedules/previews?userid=${user.sub}`)
         .then(res => res.json())
         .then(schedules => setSchedules(schedules));
     }
@@ -31,8 +27,7 @@ const LoggedinDashboard: React.FC = () => {
 
   return (
     <DashboardWrapper>
-      <Header />
-      <Title>Welcome{user && ', ' + user.name}!</Title>
+      <Title>Welcome{user && ', ' + user.nickname}!</Title>
       <SectionTitle>
         <SchedulesTitle>My Schedules</SchedulesTitle>
         <Button as='a'>
@@ -53,33 +48,6 @@ const LoggedinDashboard: React.FC = () => {
   );
 };
 
-const DefaultDashboard = () => {
-  return (
-    <>
-      <p>You are not signed in in</p>
-      <div>
-        <Button as='a' href='/api/auth/login'>
-          Log In
-        </Button>
-      </div>
-    </>
-  );
-};
+const Auth: React.FC = () => <LoggedInHOC LoggedinComponent={Dashboard} />;
 
-const DashboardHOC: React.FC<DashboardProps> = ({ schedules }) => {
-  const { user } = useUser();
-
-  let [loggedIn, setLoggedIn] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (user) {
-      setLoggedIn(true);
-    } else {
-      setLoggedIn(false);
-    }
-  }, [user]);
-
-  return loggedIn ? <LoggedinDashboard /> : <DefaultDashboard />;
-};
-
-export default DashboardHOC;
+export default Auth;

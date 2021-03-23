@@ -3,10 +3,8 @@ import styled from 'styled-components';
 export const HeroSection = styled.section`
   display: grid;
   position: relative;
-  grid-template-rows: max-content auto max-content;
-  padding: 0 ${({ theme }) => theme.padding};
-  min-height: 100vh;
-  background-color: ${({ theme }) => theme.colors.dark};
+  grid-template-rows: auto max-content;
+  min-height: ${({ theme }) => `calc(100vh - ${theme.headerHeight}px)`};
   color: ${({ theme }) => theme.colors.white};
 `;
 

@@ -24,7 +24,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   let schedules: any[];
 
   schedules = await db.all(
-    `SELECT s.* FROM schedule s, user_schedule us WHERE s.id = us.scheduleid AND us.userid = ${userid}`
+    `SELECT s.* FROM schedule s, user_schedule us WHERE s.id = us.scheduleid AND us.userid = "${userid}"`
   );
 
   schedules = schedules.map(async schedule => {
