@@ -18,13 +18,15 @@ const Dashboard: React.FC = () => {
 
   const { user, error, isLoading } = useUser();
 
-  useEffect(() => {
+  const fetchPreviews = () => {
     if (user) {
       fetch(`/api/schedules/previews?userid=${user.sub}`)
         .then(res => res.json())
         .then(schedules => setSchedules(schedules));
     }
-  }, [user, showScheduleForm]);
+  };
+
+  useEffect(fetchPreviews, [user, showScheduleForm]);
 
   const toggleNewSchedule = (e: React.FormEvent | React.MouseEvent) => {
     e.preventDefault();
@@ -45,7 +47,7 @@ const Dashboard: React.FC = () => {
       )}
       <div>
         {Array.isArray(schedules) ? (
-          <ScheduleList schedules={schedules} />
+          <ScheduleList schedules={schedules} fetchPreviews={fetchPreviews} />
         ) : isLoading ? (
           <p>Loading Schedules...</p>
         ) : (

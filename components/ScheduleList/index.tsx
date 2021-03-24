@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import Link from 'next/link';
+import { useUser } from '@auth0/nextjs-auth0';
 import { BiMenu } from 'react-icons/bi';
 import { Button } from '@/components/Button';
 import {
@@ -12,49 +12,33 @@ import {
   Users,
   ButtonsContainer,
 } from './ScheduleListStyles';
-import { Schedule } from '@/types/ScheduleTypes';
 
 interface ScheduleProps {
   schedules: any;
+  fetchPreviews: () => void;
 }
 
-const ScheduleList: React.FC<ScheduleProps> = ({ schedules }) => {
+const ScheduleList: React.FC<ScheduleProps> = ({
+  schedules,
+  fetchPreviews,
+}) => {
   const newSchedules = schedules;
 
-  // useEffect(() => {
-  //   newSchedules.forEach(schedule => {
-  //     schedule.users.push({
-  //       ref: '235445',
-  //       ts: 27439034,
-  //       name: 'Gunnar',
-  //       email: '1@1.com',
-  //     });
-  //     schedule.users.push({
-  //       ref: '235446',
-  //       ts: 24399034,
-  //       name: 'Cocobeans',
-  //       email: '1@1.com',
-  //     });
-  //     schedule.users.push({
-  //       ref: '235456',
-  //       ts: 27439903,
-  //       name: 'Rhyoa',
-  //       email: '1@1.com',
-  //     });
-  //     schedule.users.push({
-  //       ref: '23456',
-  //       ts: 27439904,
-  //       name: 'Theo',
-  //       email: '1@1.com',
-  //     });
-  //     schedule.users.push({
-  //       ref: '234456',
-  //       ts: 74399034,
-  //       name: 'Crimson',
-  //       email: '1@1.com',
-  //     });
-  //   });
-  // }, []);
+  const { user } = useUser();
+
+  const leaveSchedule = async (e: React.MouseEvent, id: number) => {
+    await fetch(`/api/schedules/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        userid: user?.sub,
+      }),
+    });
+
+    fetchPreviews();
+  };
 
   return (
     <List>
@@ -78,7 +62,11 @@ const ScheduleList: React.FC<ScheduleProps> = ({ schedules }) => {
                 View Schedule
               </Button>
             </Link>
-            <Button size='sm' btnStyle='danger'>
+            <Button
+              size='sm'
+              btnStyle='danger'
+              onClick={e => leaveSchedule(e, schedule.id)}
+            >
               Leave Schedule
             </Button>
           </ButtonsContainer>

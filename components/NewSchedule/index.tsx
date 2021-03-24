@@ -22,7 +22,7 @@ const NewSchedule: React.FC<NewScheduleProps> = ({ toggleNewSchedule }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const res = await fetch('/api/schedules', {
+    await fetch('/api/schedules', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -36,10 +36,6 @@ const NewSchedule: React.FC<NewScheduleProps> = ({ toggleNewSchedule }) => {
         },
       }),
     });
-
-    const data = await res.json();
-
-    console.log(data);
 
     toggleNewSchedule(e);
   };
