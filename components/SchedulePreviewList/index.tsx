@@ -12,10 +12,10 @@ const SchedulePreviewList: React.FC<ListProps> = ({ schedules }) => {
         <div key={schedule.ref}>
           <Link href={`/schedule/${schedule.ref}`}>
             <a href={`/schedule/${schedule.ref}`}>
-              <h3>{schedule.name}</h3>
+              <h3>{schedule.ref}</h3>
               <ul>
                 {schedule.users.map(user => (
-                  <li key={user.ref}>{user.name}</li>
+                  <li key={user.id}>{user.name}</li>
                 ))}
               </ul>
             </a>
