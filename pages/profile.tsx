@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { AiFillEdit } from 'react-icons/ai';
 import { Button } from '@/components/Button';
@@ -16,6 +17,8 @@ const Profile: React.FC = () => {
 
   const [username, setUsername] = useState<string>(user?.nickname!);
   const [usernameEdit, setUsernameEdit] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const toggleUsernameEdit = () => {
     setUsernameEdit(prevState => !prevState);
@@ -38,6 +41,8 @@ const Profile: React.FC = () => {
         username,
       }),
     });
+
+    router.push('/api/auth/login?profile=1');
   };
 
   return (
