@@ -16,7 +16,7 @@ export default withApiAuthRequired(
     const { id: scheduleid } = req.query;
 
     if (req.method === 'GET') {
-      let schedule: any = await db.get(
+      let schedule = await db.get(
         `SELECT * FROM schedule WHERE id = ${scheduleid}`
       );
 

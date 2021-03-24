@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { GetServerSideProps } from 'next';
-import { Schedule, Day, RunRange } from '@/types/ScheduleTypes';
+import { Schedule } from '@/types/ScheduleTypes';
 
 interface ScheduleProps {
   schedule: Schedule;

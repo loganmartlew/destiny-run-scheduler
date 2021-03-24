@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import { useUser } from '@auth0/nextjs-auth0';
+import { useUser, UserContext } from '@auth0/nextjs-auth0';
 import { BiMenu } from 'react-icons/bi';
 import { Button } from '@/components/Button';
 import {
   List,
-  SchedulePreview,
+  Preview,
   ScheduleHeader,
   ReorderContainer,
   ScheduleName,
@@ -12,9 +12,10 @@ import {
   Users,
   ButtonsContainer,
 } from './ScheduleListStyles';
+import { SchedulePreview } from '@/types/ScheduleTypes';
 
 interface ScheduleProps {
-  schedules: any;
+  schedules: SchedulePreview[];
   fetchPreviews: () => void;
 }
 
@@ -24,7 +25,7 @@ const ScheduleList: React.FC<ScheduleProps> = ({
 }) => {
   const newSchedules = schedules;
 
-  const { user } = useUser();
+  const { user }: UserContext = useUser();
 
   const leaveSchedule = async (e: React.MouseEvent, id: number) => {
     await fetch(`/api/schedules/${id}`, {
@@ -42,8 +43,8 @@ const ScheduleList: React.FC<ScheduleProps> = ({
 
   return (
     <List>
-      {newSchedules.map((schedule: any) => (
-        <SchedulePreview key={schedule.id}>
+      {newSchedules.map(schedule => (
+        <Preview key={schedule.id}>
           <ScheduleHeader>
             <ReorderContainer>
               <BiMenu />
@@ -52,7 +53,7 @@ const ScheduleList: React.FC<ScheduleProps> = ({
           </ScheduleHeader>
           <NextRunBadge>Runs at +6, 20/03</NextRunBadge>
           <Users>
-            {schedule.users.map((user: any) => (
+            {schedule.users.map(user => (
               <p key={user.id}>{user.name}</p>
             ))}
           </Users>
@@ -70,7 +71,7 @@ const ScheduleList: React.FC<ScheduleProps> = ({
               Leave Schedule
             </Button>
           </ButtonsContainer>
-        </SchedulePreview>
+        </Preview>
       ))}
     </List>
   );

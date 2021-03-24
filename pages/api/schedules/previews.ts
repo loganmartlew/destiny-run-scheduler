@@ -34,7 +34,7 @@ export default withApiAuthRequired(
       });
     }
 
-    let schedules: any[];
+    let schedules;
 
     schedules = await db.all(
       `SELECT s.* FROM schedule s, user_schedule us WHERE s.id = us.scheduleid AND us.userid = "${userid}"`

@@ -10,7 +10,7 @@ export const List = styled.ul`
   }
 `;
 
-export const SchedulePreview = styled.li`
+export const Preview = styled.li`
   display: flex;
   align-items: center;
   gap: 1.6em;

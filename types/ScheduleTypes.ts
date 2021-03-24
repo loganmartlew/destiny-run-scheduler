@@ -1,24 +1,24 @@
 import User from '@/types/User';
 
 export interface RunRange {
-  ref: string;
-  ts: number;
+  id: number;
   user: User;
   start: number;
   end: number;
 }
 
 export interface Day {
-  ref: string;
-  ts: number;
+  id: number;
   date: string;
   ranges: RunRange[];
 }
 
-export interface Schedule {
-  ref: string;
-  ts: number;
+export interface SchedulePreview {
+  id: number;
   name: string;
   users: User[];
+}
+
+export interface Schedule extends SchedulePreview {
   days: Day[];
 }
