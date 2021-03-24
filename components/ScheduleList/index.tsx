@@ -73,7 +73,7 @@ const ScheduleList: React.FC<ScheduleProps> = ({ schedules }) => {
             ))}
           </Users>
           <ButtonsContainer>
-            <Link href={`/schedule/${schedule.ref}`}>
+            <Link href={`/schedule/${schedule.id}`}>
               <Button as='a' size='sm'>
                 View Schedule
               </Button>

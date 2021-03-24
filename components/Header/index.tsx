@@ -19,8 +19,6 @@ import {
 } from './HeaderStyles';
 import { Theme } from '@/styles/theme';
 
-const NAVLESS_ROUTES = ['/dashboard', '/profile'];
-
 const LoggedOutButtons: React.FC = () => (
   <Button as='a' href='/api/auth/login'>
     Log In
@@ -62,6 +60,8 @@ const Header: React.FC = () => {
 
   const { user } = useUser();
 
+  const NAVLESS_ROUTES = ['/dashboard', '/profile'];
+
   // Set logged in state
   useEffect(() => {
     if (user) {
@@ -73,12 +73,15 @@ const Header: React.FC = () => {
 
   // Set hasNav
   useEffect(() => {
+    setHasNav(true);
+
     NAVLESS_ROUTES.forEach(route => {
       if (router.pathname.includes(route)) {
+        console.log(router.pathname);
         setHasNav(false);
       }
     });
-  }, []);
+  }, [router.pathname]);
 
   // Set initial animation
   useEffect(() => {

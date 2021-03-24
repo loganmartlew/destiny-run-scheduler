@@ -1,6 +1,5 @@
 export default interface User {
-  ref: string;
-  ts: number;
+  id: string;
   name: string;
   email: string;
 }

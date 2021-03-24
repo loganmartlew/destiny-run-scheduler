@@ -3,13 +3,13 @@ import { useRouter } from 'next/router';
 import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { AiFillEdit } from 'react-icons/ai';
 import { Button } from '@/components/Button';
+import Input from '@/components/Input';
 import {
   ProfileWrapper,
   Title,
   ProfileField,
   FieldTitle,
   FieldValue,
-  FieldInput,
 } from '@/pagestyles/ProfileStyles';
 
 const Profile: React.FC = () => {
@@ -60,7 +60,7 @@ const Profile: React.FC = () => {
           </>
         ) : (
           <>
-            <FieldInput
+            <Input
               type='text'
               value={username}
               onChange={handleUsernameChange}

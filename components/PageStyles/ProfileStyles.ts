@@ -22,13 +22,3 @@ export const FieldTitle = styled.h2`
 export const FieldValue = styled.span`
   font-size: 1.5rem;
 `;
-
-export const FieldInput = styled.input`
-  margin-right: 1rem;
-  padding: 0.4em 0.7em;
-  background-color: ${({ theme }) => theme.colors.white};
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  color: ${({ theme }) => theme.colors.dark};
-`;
