@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0';
 import { useDb } from '@/utils/db';
 
 /*
@@ -28,6 +29,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).json({
       message:
         'Bad request. Schedule name or user not provided, unable to create user',
+    });
+  }
+
+  const session = getSession(req, res);
+
+  if (session?.user.sub !== user.sub) {
+    return res.status(401).json({
+      error: 'not_authenticated',
+      description:
+        'The user does not have an active session or is not authenticated',
     });
   }
 

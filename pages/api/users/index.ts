@@ -15,7 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
-  const { name, email } = req.body;
+  const { userid, name, email } = req.body;
 
   if (!name || !email) {
     return res.status(400).json({
@@ -24,14 +24,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   await db.exec(
-    `INSERT INTO user (name, email) VALUES ("${name}", "${email}")`
+    `INSERT INTO user (id, name, email) VALUES ("${userid}", "${name}", "${email}")`
   );
 
-  const { 'last_insert_rowid()': newUserId } = await db.get(
-    `SELECT last_insert_rowid()`
-  );
-
-  const newUser = await db.get(`SELECT * FROM user WHERE id = ${newUserId}`);
+  const newUser = await db.get(`SELECT * FROM user WHERE id = "${userid}"`);
 
   return res.json(newUser);
 };
