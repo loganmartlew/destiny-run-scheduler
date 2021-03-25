@@ -60,7 +60,7 @@ const Header: React.FC = () => {
 
   const { user } = useUser();
 
-  const NAVLESS_ROUTES = ['/dashboard', '/profile'];
+  const NAVLESS_ROUTES = ['/dashboard', '/profile', '/schedule'];
 
   // Set logged in state
   useEffect(() => {
@@ -77,7 +77,6 @@ const Header: React.FC = () => {
 
     NAVLESS_ROUTES.forEach(route => {
       if (router.pathname.includes(route)) {
-        console.log(router.pathname);
         setHasNav(false);
       }
     });
